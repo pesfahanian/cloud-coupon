@@ -8,6 +8,8 @@ MODE = config(
 )
 
 if (MODE.lower() == 'dev'):
+    print('Running with `development` settings.')
     from .dev import *
 else:
+    print('Running with `production` settings.')
     from .prod import *

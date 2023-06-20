@@ -6,30 +6,50 @@ services:
         container_name: an-postgres
         image: postgres
         restart: always
-        ports:
-            - 5432:5432
         networks:
             - an-postgres-net
         volumes:
             - an-postgres-data:/var/lib/postgresql/data
             - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
-        env_file:
-            - env/postgres.env
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=1234
 
     an-couponing:
         container_name: an-couponing
         build:
-            dockerfile: ./Docerfile
+            context: .
         image: an/couponing
-        ports:
-            - 8800:8800
         depends_on:
             - an-postgres
         networks:
             - an-postgres-net
+            - an-couponing-net
+        healthcheck:
+            test: curl --fail http://0.0.0.0:8800/api/v1/couponing/healthcheck/ || exit 1
+            interval: 30s
+            timeout: 10s
+            retries: 3
+        environment:
+            - DB_HOST=an-postgres
+
+    an-nginx:
+        container_name: an-nginx
+        image: nginx
+        depends_on:
+            - an-couponing
+        ports:
+            - 8800:80
+        networks:
+            - an-couponing-net
+        volumes:
+            - ./nginx.conf:/etc/nginx/conf.d/default.conf
+            - ./static:/app/an_couponing/static/
 
 networks:
     an-postgres-net:
+        driver: bridge
+    an-couponing-net:
         driver: bridge
 
 volumes:

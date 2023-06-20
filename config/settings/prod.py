@@ -2,8 +2,6 @@ from decouple import config, Csv
 
 from .base import *  # noqa
 
-print('Running with `production` settings.')
-
 DEBUG = False
 
 # * ------------------------------- API --------------------------------
