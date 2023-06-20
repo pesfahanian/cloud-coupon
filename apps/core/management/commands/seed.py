@@ -8,5 +8,6 @@ class Command(BaseCommand):
             pass
 
         except Exception as e:
-            raise CommandError(f'Failure in `seed` command. '
+            command = __file__.split('/')[-1][:-3]
+            raise CommandError(f'Failure in `{command}` command. '
                                f'Reason: {str(e)}.')

@@ -19,5 +19,6 @@ class Command(BaseCommand):
                 )
 
         except Exception as e:
-            raise CommandError(f'Failure in `createadmin` command. '
+            command = __file__.split('/')[-1][:-3]
+            raise CommandError(f'Failure in `{command}` command. '
                                f'Reason: {str(e)}.')
