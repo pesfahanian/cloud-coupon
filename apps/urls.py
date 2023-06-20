@@ -9,4 +9,8 @@ urlpatterns = [
         'user/',
         include('apps.user.api.urls'),
     ),
+    path(
+        'wallet/',
+        include('apps.wallet.api.urls'),
+    ),
 ]

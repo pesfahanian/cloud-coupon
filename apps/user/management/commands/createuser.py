@@ -6,6 +6,8 @@ from django.core.management.base import (
 )
 from django.db import transaction
 
+from apps.wallet.models import Wallet
+
 User = get_user_model()
 
 
@@ -33,6 +35,7 @@ class Command(BaseCommand):
                     if (password == confirm_password):
                         user.set_password(raw_password=password)
                         user.save()
+                        Wallet.objects.create(user=user)
                     else:
                         raise Exception('Passwords do not match')
 

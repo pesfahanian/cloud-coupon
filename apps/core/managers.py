@@ -8,4 +8,4 @@ class DefaultManager(models.Manager):
 class ToggleableModelManager(DefaultManager):
 
     def get_queryset(self) -> models.QuerySet:
-        return super().get_queryset().filter(isEnabled=True, )
+        return super().get_queryset().filter(is_enabled=True, )
