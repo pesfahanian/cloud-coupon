@@ -15,6 +15,7 @@ class User(AbstractUser, UUIDModel, TemporalModel):
     objects = CustomUserManager()
     active_objects = ActiveUserManager()
 
+    email = None
     first_name = None
     last_name = None
     date_joined = None

@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     # * Apps
     'apps.core.apps.CoreConfig',
     'apps.user.apps.UserConfig',
+    'apps.wallet.apps.WalletConfig',
 
     # * Packages
     'corsheaders',
