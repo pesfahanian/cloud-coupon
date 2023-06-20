@@ -16,6 +16,7 @@ SECRET_KEY = config(
 INSTALLED_APPS = [
     # * Apps
     'apps.core.apps.CoreConfig',
+    'apps.user.apps.UserConfig',
 
     # * Packages
     'corsheaders',
@@ -111,6 +112,8 @@ class Filter(_Filter):
 
 
 LOGGING = get_logging(filter=Filter)
+
+AUTH_USER_MODEL = 'user.User'
 
 ADMIN_USERNAME = config(
     'ADMIN_USERNAME',
