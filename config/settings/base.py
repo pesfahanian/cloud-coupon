@@ -16,6 +16,7 @@ SECRET_KEY = config(
 INSTALLED_APPS = [
     # * Apps
     'apps.core.apps.CoreConfig',
+    'apps.couponing.apps.CouponingConfig',
     'apps.user.apps.UserConfig',
     'apps.wallet.apps.WalletConfig',
 
@@ -123,6 +124,12 @@ ADMIN_USERNAME = config(
 ADMIN_PASSWORD = config(
     'ADMIN_PASSWORD',
     default='admin',
+)
+
+MIN_COUPON_VALUE = config(
+    'MIN_COUPON_VALUE',
+    default=0.01,
+    cast=float,
 )
 
 # * ----------------------------- Postgres -----------------------------
