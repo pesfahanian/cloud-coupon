@@ -12,6 +12,8 @@ class CouponAdmin(TemporalModelAdmin, ToggleableModelAdmin):
     list_display = (
         'code',
         'value',
+        'type',
+        'server',
         'count',
         'selected_count',
         'used_count',
@@ -20,7 +22,12 @@ class CouponAdmin(TemporalModelAdmin, ToggleableModelAdmin):
 
     def get_readonly_fields(self, request: WSGIRequest, obj=None) -> tuple:
         if obj:
-            return self.readonly_fields + ('code', )
+            return self.readonly_fields + (
+                'code',
+                'value',
+                'type',
+                'server',
+            )
         return self.readonly_fields
 
 

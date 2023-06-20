@@ -2,7 +2,7 @@ from typing import Any
 
 from django.conf import settings
 from django.core.validators import MinValueValidator
-from django.db import models
+from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.models import (
@@ -18,6 +18,11 @@ class Server(models.IntegerChoices):
     USA = 0, _('USA')
     EU = 1, _('EU')
     UAE = 2, _('UAE')
+
+
+class CouponType(models.IntegerChoices):
+    CREDIT = 0, _('Credit')
+    REDEEMABLE = 1, _('Redeemable')
 
 
 class Coupon(UUIDModel, ToggleableModel, TemporalModel):
@@ -46,6 +51,10 @@ class Coupon(UUIDModel, ToggleableModel, TemporalModel):
         ],
     )
 
+    type = models.SmallIntegerField(
+        _('Type'),
+        choices=CouponType.choices,
+    )
     server = models.SmallIntegerField(
         _('Server'),
         choices=Server.choices,
@@ -58,15 +67,19 @@ class Coupon(UUIDModel, ToggleableModel, TemporalModel):
         self.initial_is_enabled = self.is_enabled
 
     def save(self, *args, **kwargs) -> None:
-        if not self._state.adding:
-            # * Children enable/disable logic
-            if (self.is_enabled != self.initial_is_enabled):
-                print(f'{Coupon.objects.filter(coupons__is_used=False) = }')
-                UserCoupon.objects.filter(
-                    coupon=self,
-                    is_used=False,
-                ).update(is_enabled=self.is_enabled)
-        super().save(*args, **kwargs)
+        with transaction.atomic():
+            if self._state.adding:
+                if (self.type == CouponType.CREDIT) and self.server:
+                    raise Exception(
+                        '`Credit` type coupons cannot have a `server` value')
+            else:
+                # * Children enable/disable logic
+                if (self.is_enabled != self.initial_is_enabled):
+                    UserCoupon.objects.filter(
+                        coupon=self,
+                        is_used=False,
+                    ).update(is_enabled=self.is_enabled)
+            super().save(*args, **kwargs)
 
     @property
     def selected_count(self) -> int:
