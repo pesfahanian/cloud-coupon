@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+
+    an-postgres:
+        container_name: an-postgres
+        image: postgres
+        restart: always
+        ports:
+            - 5432:5432
+        networks:
+            - an-postgres-net
+        volumes:
+            - an-postgres-data:/var/lib/postgresql/data
+            - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+        env_file:
+            - env/postgres.env
+
+    an-couponing:
+        container_name: an-couponing
+        build:
+            dockerfile: ./Docerfile
+        image: an/couponing
+        ports:
+            - 8800:8800
+        depends_on:
+            - an-postgres
+        networks:
+            - an-postgres-net
+
+networks:
+    an-postgres-net:
+        driver: bridge
+
+volumes:
+    an-postgres-data:
