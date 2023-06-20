@@ -8,10 +8,10 @@ User = get_user_model()
 class UserAdmin(admin.ModelAdmin):
     list_display = (
         'username',
-        'email',
-        'is_active',
         'created_at',
         'updated_at',
+        'last_login',
+        'is_active',
     )
     search_fields = (
         'id',
@@ -22,4 +22,5 @@ class UserAdmin(admin.ModelAdmin):
         'is_active',
         'created_at',
         'updated_at',
+        'last_login',
     )

@@ -11,4 +11,3 @@ python manage.py seed
 
 echo "=================== Starting Servers ==================="
 gunicorn -c config/gunicorn.py config.wsgi
-# python manage.py runserver 0.0.0.0:8800

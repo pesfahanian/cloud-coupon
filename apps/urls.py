@@ -5,4 +5,8 @@ urlpatterns = [
         'healthcheck/',
         include('health_check.urls'),
     ),
+    path(
+        'user/',
+        include('apps.user.api.urls'),
+    ),
 ]
