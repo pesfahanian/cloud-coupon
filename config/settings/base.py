@@ -22,6 +22,7 @@ INSTALLED_APPS = [
 
     # * Packages
     'corsheaders',
+    'django_filters',
     'rest_framework',
     'rest_framework_simplejwt',
 
@@ -197,6 +198,8 @@ SIMPLE_JWT = {
 }
 
 REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS':
+    ('django_filters.rest_framework.DjangoFilterBackend', ),
     'DEFAULT_AUTHENTICATION_CLASSES':
     ('rest_framework_simplejwt.authentication.JWTTokenUserAuthentication', ),
     'DEFAULT_PAGINATION_CLASS':
