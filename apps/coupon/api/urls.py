@@ -5,6 +5,6 @@ from apps.coupon.api import views
 urlpatterns = [
     path(
         '',
-        views.CouponListAPIView.as_view(),
+        views.UserCouponListAPIView.as_view(),
     ),
 ]

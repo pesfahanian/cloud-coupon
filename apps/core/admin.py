@@ -1,9 +1,4 @@
 from django.contrib import admin
-from django.db import models
-
-
-class ToggleableModelAdmin(admin.ModelAdmin):
-    list_display = ('is_enabled', )
 
 
 class TemporalModelAdmin(admin.ModelAdmin):

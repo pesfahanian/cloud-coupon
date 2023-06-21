@@ -3,8 +3,6 @@ from uuid import uuid4
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from apps.core.managers import DefaultManager, ToggleableModelManager
-
 
 class UUIDModel(models.Model):
 
@@ -19,28 +17,6 @@ class UUIDModel(models.Model):
 
     def __str__(self) -> str:
         return str(self.id)
-
-
-class ToggleableModel(models.Model):
-
-    class Meta:
-        abstract = True
-
-    is_enabled = models.BooleanField(
-        _('Is Enabled'),
-        default=True,
-    )
-
-    objects = DefaultManager()
-    enabled_objects = ToggleableModelManager()
-
-    def enable(self) -> None:
-        self.is_enabled = True
-        self.save()
-
-    def disable(self) -> None:
-        self.is_enabled = False
-        self.save()
 
 
 class TemporalModel(models.Model):

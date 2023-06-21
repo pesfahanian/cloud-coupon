@@ -4,16 +4,12 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from apps.core.models import (
-    TemporalModel,
-    ToggleableModel,
-    UUIDModel,
-)
+from apps.core.models import TemporalModel, UUIDModel
 
 logger = logging.getLogger('django')
 
 
-class Wallet(UUIDModel, ToggleableModel, TemporalModel):
+class Wallet(UUIDModel, TemporalModel):
 
     class Meta:
         verbose_name = 'Wallet'

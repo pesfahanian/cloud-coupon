@@ -1,15 +1,9 @@
-from typing import Any
-
 from django.conf import settings
 from django.core.validators import MinValueValidator
-from django.db import models, transaction
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from apps.core.models import (
-    TemporalModel,
-    ToggleableModel,
-    UUIDModel,
-)
+from apps.core.models import TemporalModel, UUIDModel
 
 from apps.coupon.utils import generate_unique_code
 
@@ -25,7 +19,7 @@ class CouponType(models.IntegerChoices):
     DISCOUNT = 1, _('Discount')
 
 
-class Coupon(UUIDModel, ToggleableModel, TemporalModel):
+class Coupon(UUIDModel, TemporalModel):
 
     class Meta:
         verbose_name = 'Coupon'
@@ -50,6 +44,18 @@ class Coupon(UUIDModel, ToggleableModel, TemporalModel):
             MinValueValidator(0),
         ],
     )
+    # initial_count = models.PositiveIntegerField(
+    #     _('Count'),
+    #     validators=[
+    #         MinValueValidator(1),
+    #     ],
+    # )
+    # used_count = models.PositiveIntegerField(
+    #     _('Count'),
+    #     validators=[
+    #         MinValueValidator(0),
+    #     ],
+    # )
 
     type = models.SmallIntegerField(
         _('Type'),
@@ -62,30 +68,18 @@ class Coupon(UUIDModel, ToggleableModel, TemporalModel):
         blank=True,
     )
 
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        super().__init__(*args, **kwargs)
-        self.initial_is_enabled = self.is_enabled
-
     def save(self, *args, **kwargs) -> None:
-        with transaction.atomic():
-            if self._state.adding:
-                if (self.type == CouponType.CREDIT) and self.server:
-                    raise Exception(
-                        '`Credit` type coupons cannot have a `server` value')
-            else:
-                # * Children enable/disable logic
-                if (self.is_enabled != self.initial_is_enabled):
-                    UserCoupon.objects.filter(
-                        coupon=self,
-                        is_used=False,
-                    ).update(is_enabled=self.is_enabled)
-            super().save(*args, **kwargs)
+        if self._state.adding:
+            if (self.type == CouponType.CREDIT) and self.server:
+                raise Exception(
+                    '`Credit` type coupons cannot have a `server` value')
+        super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.code
 
 
-class UserCoupon(UUIDModel, ToggleableModel, TemporalModel):
+class UserCoupon(UUIDModel, TemporalModel):
 
     class Meta:
         verbose_name = 'User Coupon'

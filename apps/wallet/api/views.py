@@ -12,7 +12,7 @@ class WalletGetAPIView(GenericAPIView):
     serializer_class = WalletSerializer
     pagination_class = None
 
-    queryset = Wallet.enabled_objects.all()
+    queryset = Wallet.objects.all()
 
     def get(self, request: Request, *args, **kwargs) -> Response:
         instance = get_object_or_404(

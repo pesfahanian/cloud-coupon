@@ -1,17 +1,29 @@
 from django_filters import rest_framework as filters
 
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListCreateAPIView
 from rest_framework.permissions import IsAuthenticated
 
-from apps.coupon.api.filters import CouponFilter
-from apps.coupon.api.serializers import CouponSerializer
-from apps.coupon.models import Coupon
+from apps.coupon.api.filters import UserCouponFilter
+from apps.coupon.api.serializers import (
+    UserCouponListSerializer,
+    UserCouponCreateSerializer,
+)
+from apps.coupon.models import UserCoupon
 
 
-class CouponListAPIView(ListAPIView):
+class UserCouponListAPIView(ListCreateAPIView):
     permission_classes = (IsAuthenticated, )
-    serializer_class = CouponSerializer
-    queryset = Coupon.enabled_objects.filter(count__gte=1)
+
+    queryset = UserCoupon.objects.all()
 
     filter_backends = (filters.DjangoFilterBackend, )
-    filterset_class = CouponFilter
+    filterset_class = UserCouponFilter
+
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset(*args, **kwargs).\
+            filter(user__id=self.request.user.id, )
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return UserCouponCreateSerializer
+        return UserCouponListSerializer
