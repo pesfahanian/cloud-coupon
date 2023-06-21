@@ -1,2 +1,2 @@
-create database "an-couponing";
-grant all privileges on database "an-couponing" to postgres;
+create database "cloud-coupon";
+grant all privileges on database "cloud-coupon" to postgres;

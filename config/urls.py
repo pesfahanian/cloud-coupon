@@ -15,7 +15,7 @@ urlpatterns = [
         admin.site.urls,
     ),
     path(
-        'api/v1/couponing/',
+        'api/v1/coupon/',
         include('apps.urls'),
     ),
 ]
@@ -23,10 +23,10 @@ urlpatterns = [
 if settings.DEBUG:
     schema_view = get_schema_view(
         openapi.Info(
-            title='AN-Couponing',
+            title='Cloud-Coupon',
             default_version='0.0.1',
             description=
-            'Swagger UI for AN-Couponing backend service API Schema.',
+            'Swagger UI for Cloud-Coupon backend service API Schema.',
         ),
         permission_classes=[
             permissions.AllowAny,

@@ -3,7 +3,7 @@ from django.core.handlers.wsgi import WSGIRequest
 
 from apps.core.admin import TemporalModelAdmin, ToggleableModelAdmin
 
-from apps.couponing.models import Coupon, UserCoupon
+from apps.coupon.models import Coupon, UserCoupon
 
 
 @admin.register(Coupon)

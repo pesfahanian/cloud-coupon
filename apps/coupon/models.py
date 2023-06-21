@@ -11,7 +11,7 @@ from apps.core.models import (
     UUIDModel,
 )
 
-from apps.couponing.utils import generate_unique_code
+from apps.coupon.utils import generate_unique_code
 
 
 class Server(models.IntegerChoices):
@@ -22,7 +22,7 @@ class Server(models.IntegerChoices):
 
 class CouponType(models.IntegerChoices):
     CREDIT = 0, _('Credit')
-    REDEEMABLE = 1, _('Redeemable')
+    DISCOUNT = 1, _('Discount')
 
 
 class Coupon(UUIDModel, ToggleableModel, TemporalModel):
@@ -109,7 +109,7 @@ class UserCoupon(UUIDModel, ToggleableModel, TemporalModel):
         related_name='coupons',
     )
     coupon = models.ForeignKey(
-        'couponing.Coupon',
+        'coupon.Coupon',
         on_delete=models.CASCADE,
         related_name='coupons',
     )

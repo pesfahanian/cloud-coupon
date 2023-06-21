@@ -16,7 +16,7 @@ SECRET_KEY = config(
 INSTALLED_APPS = [
     # * Apps
     'apps.core.apps.CoreConfig',
-    'apps.couponing.apps.CouponingConfig',
+    'apps.coupon.apps.CouponConfig',
     'apps.user.apps.UserConfig',
     'apps.wallet.apps.WalletConfig',
 
@@ -110,7 +110,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 class Filter(_Filter):
-    service = 'couponing'
+    service = 'coupon'
 
 
 LOGGING = get_logging(filter=Filter)
@@ -138,7 +138,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': config(
             'DB_NAME',
-            default='an-couponing',
+            default='cloud-coupon',
         ),
         'USER': config(
             'DB_USER',

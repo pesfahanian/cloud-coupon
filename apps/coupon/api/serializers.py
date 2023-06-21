@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 from apps.core.api.serializers import TemporalModelSerializer
 
-from apps.couponing.models import Coupon, UserCoupon
+from apps.coupon.models import Coupon, UserCoupon
 
 
 class CouponSerializer(serializers.ModelSerializer):

@@ -1,4 +1,4 @@
-# AN-Couponing
+# Cloud-Coupon
 
 ```
 python manage.py collectstatic

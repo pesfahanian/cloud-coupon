@@ -1,12 +1,12 @@
 FROM python:3.11.2-slim-buster
 
-RUN mkdir /an_couponing
+RUN mkdir /cloud_coupon
 
-WORKDIR /an_couponing
+WORKDIR /cloud_coupon
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-ENV PYTHONPATH "${PYTHONPATH}:/an_couponing"
+ENV PYTHONPATH "${PYTHONPATH}:/cloud_coupon"
 
 COPY . .
 
