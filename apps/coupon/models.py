@@ -47,7 +47,7 @@ class Coupon(UUIDModel, ToggleableModel, TemporalModel):
     count = models.PositiveIntegerField(
         _('Count'),
         validators=[
-            MinValueValidator(1),
+            MinValueValidator(0),
         ],
     )
 
@@ -80,18 +80,6 @@ class Coupon(UUIDModel, ToggleableModel, TemporalModel):
                         is_used=False,
                     ).update(is_enabled=self.is_enabled)
             super().save(*args, **kwargs)
-
-    @property
-    def selected_count(self) -> int:
-        return self.coupons.count()
-
-    @property
-    def used_count(self) -> int:
-        return self.coupons.filter(is_used=True).count()
-
-    @property
-    def available_count(self) -> int:
-        return self.count - self.selected_count
 
     def __str__(self) -> str:
         return self.code

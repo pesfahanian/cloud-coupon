@@ -14,7 +14,9 @@ class CouponSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'code',
+            'count',
             'value',
+            'type',
             'server',
             'created_at',
         )

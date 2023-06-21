@@ -15,7 +15,7 @@ urlpatterns = [
         admin.site.urls,
     ),
     path(
-        'api/v1/coupon/',
+        'api/v1/',
         include('apps.urls'),
     ),
 ]
