@@ -80,6 +80,12 @@ python manage.py createadmin
 python manage.py seed
 ```
 
+Run the service:
+
+```sh
+./scripts/run.sh
+```
+
 ---
 
 ## Testing
