@@ -1,0 +1,9 @@
+[run]
+branch = True
+omit =
+    */migrations/*
+    */management/*
+    manage.py
+
+[coverage:report]
+skip_empty = true

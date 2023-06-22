@@ -4,10 +4,11 @@ Simple cloud-coupon web app with [Django](https://www.djangoproject.com/).
 
 ### Routes:
 
-| Route     | URL                                                   |
-| --------- | ----------------------------------------------------- |
-| `admin`   | [0.0.0.0:8800/admin/](http://0.0.0.0:8800/admin/)     |
-| `swagger` | [0.0.0.0:8201/swagger/](http://0.0.0.0:8800/swagger/) |
+| Route         | URL                                                           |
+| ------------- | ------------------------------------------------------------- |
+| `admin`       | [0.0.0.0:8800/admin/](http://0.0.0.0:8800/admin/)             |
+| `swagger`     | [0.0.0.0:8201/swagger/](http://0.0.0.0:8800/swagger/)         |
+| `healthcheck` | [0.0.0.0:8201/healthcheck/](http://0.0.0.0:8800/healthcheck/) |
 
 ### Database Schema:
 
@@ -90,6 +91,27 @@ Run the service:
 
 ## Testing
 
+### Coverage:
+
+Run coverage with:
+
+```sh
+./scripts/coverage.sh
+```
+
+> Coverage is at `84%`.
+
+### API Testing:
+
+Obtain a token from [0.0.0.0:8800/api/v1/user/login/](http://0.0.0.0:8800/api/v1/user/login/) with the following data for testing the API's.
+
+```json
+{
+    "username": "parsa",
+    "password": "1234"
+}
+```
+
 > Postman collection can be found [here](docs/cloud-coupon.postman_collection.json).
 
-> Obtain a token from [0.0.0.0:8800/api/v1/user/login/](http://0.0.0.0:8800/api/v1/user/login/) for testing the API's. All the user's passwords are `1234`.
+> All the seeded user's passwords are `1234`.
