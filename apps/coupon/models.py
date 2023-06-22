@@ -44,18 +44,6 @@ class Coupon(UUIDModel, TemporalModel):
             MinValueValidator(0),
         ],
     )
-    # initial_count = models.PositiveIntegerField(
-    #     _('Count'),
-    #     validators=[
-    #         MinValueValidator(1),
-    #     ],
-    # )
-    # used_count = models.PositiveIntegerField(
-    #     _('Count'),
-    #     validators=[
-    #         MinValueValidator(0),
-    #     ],
-    # )
 
     type = models.SmallIntegerField(
         _('Type'),
@@ -72,8 +60,16 @@ class Coupon(UUIDModel, TemporalModel):
         if self._state.adding:
             if (self.type == CouponType.CREDIT) and self.server:
                 raise Exception(
-                    '`Credit` type coupons cannot have a `server` value')
+                    'Coupons with `Credit` type cannot have a `server` value')
         super().save(*args, **kwargs)
+
+    @property
+    def user_coupons_count(self) -> int:
+        return self.coupons.count()
+
+    @property
+    def available_count(self) -> int:
+        return self.count - self.user_coupons_count
 
     def __str__(self) -> str:
         return self.code
@@ -84,6 +80,10 @@ class UserCoupon(UUIDModel, TemporalModel):
     class Meta:
         verbose_name = 'User Coupon'
         verbose_name_plural = 'User Coupons'
+        unique_together = (
+            'user',
+            'coupon',
+        )
 
     user = models.ForeignKey(
         'user.User',
@@ -100,6 +100,10 @@ class UserCoupon(UUIDModel, TemporalModel):
         _('Is Used'),
         default=False,
     )
+
+    def use(self) -> None:
+        self.is_used = True
+        self.save()
 
     def __str__(self) -> str:
         return f'{self.user}-{self.coupon}'

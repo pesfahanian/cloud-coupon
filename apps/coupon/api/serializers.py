@@ -4,6 +4,7 @@ from rest_framework import serializers
 
 from apps.core.api.serializers import TemporalModelSerializer
 
+from apps.coupon.handlers import user_coupon_create_handler
 from apps.coupon.models import Coupon, UserCoupon
 
 from apps.wallet.models import Wallet
@@ -22,20 +23,13 @@ class CouponSerializer(serializers.ModelSerializer):
         )
 
 
-class UserCouponListSerializer(TemporalModelSerializer):
+class UserCouponListCreateSerializer(serializers.ModelSerializer):
+    # ! Swagger UI schema is not shown correctly.
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
     coupon = CouponSerializer(read_only=True)
 
-    class Meta:
-        model = UserCoupon
-        fields = (
-            'id',
-            'coupon',
-            'is_used',
-        ) + TemporalModelSerializer.Meta.fields
-
-
-class UserCouponCreateSerializer(serializers.ModelSerializer):
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    is_used = serializers.BooleanField(read_only=True)
 
     code = serializers.CharField(
         max_length=6,
@@ -49,28 +43,21 @@ class UserCouponCreateSerializer(serializers.ModelSerializer):
             'id',
             'user',
             'code',
-        )
+            'coupon',
+            'is_used',
+        ) + TemporalModelSerializer.Meta.fields
 
     def create(self, validated_data: dict) -> UserCoupon:
         user = validated_data['user']
         code = validated_data['code']
 
-        user_id = user.id
-
         try:
-            wallet_obj = Wallet.objects.get(user_id=user_id)
-        except Wallet.DoesNotExist:
+            user_coupon_obj = user_coupon_create_handler(
+                user_id=user.id,
+                code=code,
+            )
+            return user_coupon_obj
+
+        except Exception as e:
             raise serializers.ValidationError(
-                'Wallet for this user does not exist.')
-
-        try:
-            coupon_obj = Coupon.objects.get(code=code)
-        except Coupon.DoesNotExist:
-            raise serializers.ValidationError('Invalid coupon.')
-
-        user_coupon_obj = UserCoupon.objects.create(
-            user_id=user_id,
-            coupon=coupon_obj,
-        )
-
-        return user_coupon_obj
+                f'Failed to create user coupon. Reason: {str(e)}.')

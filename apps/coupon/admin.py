@@ -14,6 +14,8 @@ class CouponAdmin(TemporalModelAdmin):
         'value',
         'type',
         'server',
+        'user_coupons_count',
+        'available_count',
         'count',
     ) + TemporalModelAdmin.list_display
 
