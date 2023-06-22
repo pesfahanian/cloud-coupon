@@ -25,7 +25,7 @@ class TestLogin(TestCore):
             response.data,
         )
 
-    def test_invalid(self) -> None:
+    def test_invalid_data(self) -> None:
         data = {
             'username': self.invalid_username,
             'password': self.invalid_password,
@@ -44,7 +44,7 @@ class TestLogin(TestCore):
 class TestToken(TestCore):
     token_route = reverse('token')
 
-    def test_happy(self) -> None:
+    def test_ok(self) -> None:
         data = {
             'refresh': self.get_token().json()['refresh'],
         }
@@ -67,4 +67,36 @@ class TestToken(TestCore):
         self.assertEquals(
             str(self.valid_user.id),
             user_id,
+        )
+
+
+class TestUser(TestCore):
+    user_route = reverse('user')
+
+    def test_ok(self) -> None:
+        response = self.client.get(
+            path=self.user_route,
+            headers=self.valid_user_authorization_headers,
+        )
+        self.assertEquals(
+            response.status_code,
+            status.HTTP_200_OK,
+        )
+        self.assertIn(
+            'id',
+            response.data,
+        )
+        self.assertIn(
+            'username',
+            response.data,
+        )
+
+    def test_invalid_user(self) -> None:
+        response = self.client.get(
+            path=self.user_route,
+            headers=self.invalid_user_authorization_headers,
+        )
+        self.assertEquals(
+            response.status_code,
+            status.HTTP_404_NOT_FOUND,
         )

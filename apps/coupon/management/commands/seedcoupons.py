@@ -12,6 +12,24 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs) -> None:
         try:
+            # * Make sure we create at least one coupon type for tests.
+            coupon_create_handler(
+                **{
+                    'code': 'ABC123',
+                    'value': random.randint(5, 100),
+                    'count': 1,
+                    'type': CouponType.CREDIT,
+                })
+            coupon_create_handler(
+                **{
+                    'code': 'XYZ789',
+                    'value': random.randint(5, 100),
+                    'count': random.randint(1, 100),
+                    # 'count': 1,
+                    'type': CouponType.DISCOUNT,
+                    'server': Server.USA,
+                })
+
             for _ in range(COUNT):
                 kwargs = {
                     'value': random.randint(5, 100),

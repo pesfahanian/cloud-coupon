@@ -99,7 +99,7 @@ Run coverage with:
 ./scripts/coverage.sh
 ```
 
-> Coverage is at `87%`.
+> Coverage is at `96%`.
 
 ### API Testing:
 
