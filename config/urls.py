@@ -15,6 +15,10 @@ urlpatterns = [
         admin.site.urls,
     ),
     path(
+        'healthcheck/',
+        include('health_check.urls'),
+    ),
+    path(
         'api/v1/',
         include('apps.urls'),
     ),

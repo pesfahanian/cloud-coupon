@@ -7,8 +7,6 @@ from apps.core.api.serializers import TemporalModelSerializer
 from apps.coupon.handlers import user_coupon_create_handler
 from apps.coupon.models import Coupon, UserCoupon
 
-from apps.wallet.models import Wallet
-
 
 class CouponSerializer(serializers.ModelSerializer):
 
@@ -23,7 +21,7 @@ class CouponSerializer(serializers.ModelSerializer):
         )
 
 
-class UserCouponListCreateSerializer(serializers.ModelSerializer):
+class UserCouponListCreateSerializer(TemporalModelSerializer):
     # ! Swagger UI schema is not shown correctly.
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 

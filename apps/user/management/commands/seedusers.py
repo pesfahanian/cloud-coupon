@@ -8,8 +8,9 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs) -> None:
         try:
             for username in [
-                    'john',
-                    'jane',
+                    'alice',
+                    'bob',
+                    'charlie',
             ]:
                 user_create_handler(
                     username=username,
