@@ -61,6 +61,9 @@ class Coupon(UUIDModel, TemporalModel):
             if (self.type == CouponType.CREDIT) and self.server:
                 raise Exception(
                     'Coupons with `Credit` type cannot have a `server` value')
+            if (self.type == CouponType.DISCOUNT) and (self.server is None):
+                raise Exception(
+                    'Coupons with `Discount` type must a `server` value')
         super().save(*args, **kwargs)
 
     @property

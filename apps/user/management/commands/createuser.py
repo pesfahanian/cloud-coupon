@@ -1,14 +1,10 @@
-from django.contrib.auth import get_user_model
 from django.core.management.base import (
     BaseCommand,
     CommandError,
     CommandParser,
 )
-from django.db import transaction
 
-from apps.wallet.models import Wallet
-
-User = get_user_model()
+from apps.user.handlers import user_create_handler
 
 
 class Command(BaseCommand):
@@ -22,22 +18,15 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs) -> None:
         try:
-            with transaction.atomic():
-                user, created = User.objects.get_or_create(
+            password = input('Password: ')
+            confirm_password = input('Confirm Password: ')
+            if (password == confirm_password):
+                user_create_handler(
                     username=kwargs['username'],
-                    is_staff=False,
-                    is_active=True,
-                    is_superuser=False,
+                    password=password,
                 )
-                if created:
-                    password = input('Password: ')
-                    confirm_password = input('Confirm Password: ')
-                    if (password == confirm_password):
-                        user.set_password(raw_password=password)
-                        user.save()
-                        Wallet.objects.create(user=user)
-                    else:
-                        raise Exception('Passwords do not match')
+            else:
+                raise Exception('Passwords do not match')
 
         except Exception as e:
             command = __file__.split('/')[-1][:-3]

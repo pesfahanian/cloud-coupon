@@ -5,6 +5,10 @@ from apps.coupon.models import Coupon, CouponType, UserCoupon
 from apps.wallet.models import Wallet
 
 
+def coupon_create_handler(**kwargs) -> None:
+    Coupon.objects.create(**kwargs)
+
+
 def user_coupon_create_handler(user_id: str, code: str) -> UserCoupon:
     try:
         wallet_obj = Wallet.objects.get(user_id=user_id)
