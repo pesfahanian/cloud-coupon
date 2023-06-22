@@ -92,4 +92,4 @@ Run the service:
 
 > Postman collection can be found [here](docs/cloud-coupon.postman_collection.json).
 
-> Obtain a token from [0.0.0.0:8800/api/v1/user/login/](http://0.0.0.0:8800/api/v1/user/login/) for testing the API's.
+> Obtain a token from [0.0.0.0:8800/api/v1/user/login/](http://0.0.0.0:8800/api/v1/user/login/) for testing the API's. All the user's passwords are `1234`.

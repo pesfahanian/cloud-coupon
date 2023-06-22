@@ -28,8 +28,8 @@ if settings.DEBUG:
     schema_view = get_schema_view(
         openapi.Info(
             title='Cloud-Coupon',
-            default_version='0.0.1',
-            description=
+            default_version='1.0.0',
+            description=  # noqa
             'Swagger UI for Cloud-Coupon backend service API Schema.',
         ),
         permission_classes=[
