@@ -6,5 +6,6 @@ urlpatterns = [
     path(
         '',
         views.WalletGetAPIView.as_view(),
+        name='wallet',
     ),
 ]

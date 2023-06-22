@@ -1,6 +1,5 @@
 import jwt
 
-from django.contrib.auth import get_user_model
 from django.urls import reverse
 
 from rest_framework import status
@@ -9,7 +8,7 @@ from apps.core.tests import TestCore
 
 
 class TestLogin(TestCore):
-    login_route = 'login'
+    login_route = reverse('login')
 
     def test_ok(self) -> None:
         data = {
@@ -17,7 +16,7 @@ class TestLogin(TestCore):
             'password': self.valid_password,
         }
         response = self.client.post(
-            path=reverse(self.login_route),
+            path=self.login_route,
             data=data,
             format='json',
         )
@@ -35,7 +34,15 @@ class TestLogin(TestCore):
         )
 
     def test_invalid(self) -> None:
-        response = self.invalid_login()
+        data = {
+            'username': self.invalid_username,
+            'password': self.invalid_password,
+        }
+        response = self.client.post(
+            path=self.login_route,
+            data=data,
+            format='json',
+        )
         self.assertEquals(
             response.status_code,
             status.HTTP_401_UNAUTHORIZED,
@@ -43,7 +50,7 @@ class TestLogin(TestCore):
 
 
 class TestToken(TestCore):
-    token_route = 'token'
+    token_route = reverse('token')
 
     def test_happy(self) -> None:
         data = {
@@ -51,7 +58,7 @@ class TestToken(TestCore):
         }
 
         response = self.client.post(
-            path=reverse(self.token_route),
+            path=self.token_route,
             data=data,
             format='json',
         )
@@ -61,14 +68,11 @@ class TestToken(TestCore):
             options={'verify_signature': False},
         )['user_id']
 
-        User = get_user_model()
-        user = User.objects.get(username=self.valid_username)
-
         self.assertEquals(
             response.status_code,
             status.HTTP_200_OK,
         )
         self.assertEquals(
-            str(user.id),
+            str(self.valid_user.id),
             user_id,
         )

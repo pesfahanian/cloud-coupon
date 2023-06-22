@@ -6,5 +6,6 @@ urlpatterns = [
     path(
         '',
         views.UserCouponListAPIView.as_view(),
+        name='coupon',
     ),
 ]
