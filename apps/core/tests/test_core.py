@@ -22,12 +22,11 @@ class TestCore(TestCase):
             'username': self.valid_username,
             'password': self.valid_password,
         }
-        response = self.client.post(
+        return self.client.post(
             path=reverse('login'),
             data=data,
             format='json',
         )
-        return response.json()
 
     @classmethod
     def setUpClass(cls) -> None:
@@ -45,7 +44,7 @@ class TestCore(TestCase):
 
     @property
     def valid_user_authorization_headers(self) -> dict:
-        access_token = self.get_token()['access']
+        access_token = self.get_token().json()['access']
         return {
             'Authorization': f'Bearer {access_token}',
         }

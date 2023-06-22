@@ -11,15 +11,7 @@ class TestLogin(TestCore):
     login_route = reverse('login')
 
     def test_ok(self) -> None:
-        data = {
-            'username': self.valid_username,
-            'password': self.valid_password,
-        }
-        response = self.client.post(
-            path=self.login_route,
-            data=data,
-            format='json',
-        )
+        response = self.get_token()
         self.assertEquals(
             response.status_code,
             status.HTTP_200_OK,
@@ -54,7 +46,7 @@ class TestToken(TestCore):
 
     def test_happy(self) -> None:
         data = {
-            'refresh': self.get_token()['refresh'],
+            'refresh': self.get_token().json()['refresh'],
         }
 
         response = self.client.post(
